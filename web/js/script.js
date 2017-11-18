@@ -20,5 +20,7 @@ class Data{
 path = 'data/data.json';
 d3.json(path, function(data){
     console.log(data);
+    let map = new Map();
+    map.drawMap();
 });
 
