@@ -22,6 +22,40 @@
             </div>
             <div class="col-sm">
                 line-chart here.
+
+                <div class = 'row' id="howtype_option_1">
+                    <label><input type="checkbox" name="Home_Type" id="Home_Type" width="30px;" value = "ListPrice_1Bedroom"/></label>1-bedroom
+                    <label><input type="checkbox" name="Home_Type" id="Home_Type" width="30px;" value ="ListPrice_2Bedroom"/></label>2-bedroom
+                    <label><input type="checkbox" name="Home_Type" id="Home_Type" width="30px;" value = "ListPrice_3Bedroom"/></label>3-bedroom
+                    <label><input type="checkbox" name="Home_Type" id="Home_Type" width="30px;" value = "ListPrice_4Bedroom"/></label>4-bedroom
+                    <label><input type="checkbox" name="Home_Type" id="Home_Type" width="30px;" value ="ListPrice_5BedroomOrMore"/></label>5-bedroom or more
+                </div>
+
+                <div class = 'row' id="howtype_option_2">
+
+                    <label><input type="checkbox" name="Home_Type" id="Home_Type" width="30px;" value = "ListPrice_CondoCoop"/></label>Condo
+                    <label><input type="checkbox" name="Home_Type" id="Home_Type" width="30px;" value = "ListPrice_DuplexTriplex"/></label>Duplex or Triplex
+                    <label><input type="checkbox" name="Home_Type" id="Home_Type" width="30px;" value ="ListPrice_Sfr"/></label>Single Family House
+                    <label><input type="checkbox" name="Home_Type" id="Home_Type" width="30px;" value = "ListPrice_AllHomes"/></label>All Homes
+                    <input type="button" value="Go" id = "hometypebutton" />
+                </div>
+
+
+
+
+
+                <div class = 'row' id="price">
+                </div>
+
+                <div class='row' id="financial">
+                    <label><input type="checkbox" name="choice" id="choice" width="30px;" value = "mortgage" onclick="drawlinechart()"/></label>Mortgage Rate
+                    <label><input type="checkbox" name="choice" id="choice" width="30px;" value ="stock" onclick="drawlinechart()"/></label>Stock Market Index
+                    <label><input type="checkbox" name="choice" id="choice" width="30px;" value = "unemployment" onclick="drawlinechart()"/></label>Unemployment
+
+                </div>
+
+
+
             </div>
             <div class='row'>
             </div>
@@ -35,5 +69,6 @@
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
         <script type="application/javascript" src="js/script.js"></script>
         <script type="application/javascript" src="js/map.js"></script>
+        <script src="js/linechart.js"></script>
     </body>
 </html>
