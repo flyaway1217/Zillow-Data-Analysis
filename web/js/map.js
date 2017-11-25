@@ -11,13 +11,49 @@ class Map {
                         .scale([width]);
         let path = d3.geoPath()
             .projection(projection);
-        d3.json('../data/states/AK.json', function(json){
-            console.log(json.features.counties);
+
+        d3.json('../data/states/Alaska.json', function(json){
+            console.log(json.features);
             d3.select('#map').selectAll('path')
-            .data(json.features.counties)
+            .data(json.features)
             .enter()
             .append('path')
             .attr('d', path);
+            //.on("click", clicked);
+
+var centered;
+
+function    clicked(d) {
+  var x, y, k;
+
+  if (d && centered !== d) {
+    var centroid = path.centroid(d);
+    x = centroid[0];
+    y = centroid[1];
+    k = 4;
+    centered = d;
+  } else {
+    x = width / 2;
+    y = height / 2;
+    k = 1;
+    centered = null;
+  }
+
+let g = d3.select('#map');
+  g.selectAll("path")
+      .classed("active", centered && function(d) { return d === centered; });
+
+  g.transition()
+      .duration(750)
+      .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")scale(" + k + ")translate(" + -x + "," + -y + ")")
+      .style("stroke-width", 1.5 / k + "px");
+}
+
         });
     }
+
+
+
 }
+
+
