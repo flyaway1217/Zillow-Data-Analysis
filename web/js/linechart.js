@@ -1,5 +1,5 @@
 function getSelectedValue(name){
-    var select = document.getElementById(name);
+    var select = document.getElementByName(name);
     var str = [];
     for(i=0;i<select.length;i++){
         if(select.options[i].selected){
