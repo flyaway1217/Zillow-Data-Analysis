@@ -12,8 +12,8 @@ class Map {
         let path = d3.geoPath()
             .projection(projection);
 
-        d3.json('../data/states/Alaska.json', function(json){
-            console.log(json.features);
+        d3.json('../data/states/California.json', function(json){
+            console.log(json);
             d3.select('#map').selectAll('path')
             .data(json.features)
             .enter()
