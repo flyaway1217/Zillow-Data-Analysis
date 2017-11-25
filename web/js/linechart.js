@@ -11,18 +11,18 @@ function getSelectedValue(name){
 
 function drawlinechart_houseprice(data,choices,cities){
 
-    cities = [["Philadelphia","PA"],["Maricopa","AZ"]]
+    cities = [["Philadelphia","PA"],["Maricopa","AZ"]];
 
     d3.select("#price").selectAll("svg").remove();
-    var margin = {top: 20, right: 20, bottom: 30, left: 50}
-    var width = 960 - margin.left - margin.right
-    var height = 500 - margin.top - margin.bottom
+    var margin = {top: 20, right: 20, bottom: 30, left: 50};
+    var width = 960 - margin.left - margin.right;
+    var height = 500 - margin.top - margin.bottom;
 
     var svg = d3.select("#price").append("svg")
         .attr("width",960)
         .attr("height",500)
         .append("g")
-        .attr("transform","translate(" + margin.left + ", 0)")
+        .attr("transform","translate(" + margin.left + ", 0)");
 
     var x = d3.scaleTime().range([0, width]);
     var y_axis = d3.scaleLinear().range([height-20, 0]);
@@ -35,10 +35,10 @@ function drawlinechart_houseprice(data,choices,cities){
     if (city_length == 0){
 
 
-        let max_ave = 0
-        let national_ave = {}
+        let max_ave = 0;
+        let national_ave = {};
         for(let i = 0;i<choice_length;i++){
-            national_ave[choices[i]]={}
+            national_ave[choices[i]]={};
             //console.log(data[choices[i]][0])
             let cur_choice_len = data[choices[i]].length;
 
@@ -48,20 +48,20 @@ function drawlinechart_houseprice(data,choices,cities){
                     if ((key!="CountyName")&&(key!="Metro")&&(key!="RegionName")&&(key!="SizeRank")&&(key!="State")){
                         if (!(key in national_ave[choices[i]])){
 
-                            var obj = Number(data[choices[i]][j][key])
+                            var obj = Number(data[choices[i]][j][key]);
                             if (obj>0){
-                                national_ave[choices[i]][key]={}
-                                national_ave[choices[i]][key]["sum"]=0
-                                national_ave[choices[i]][key]["count"]=0
-                                national_ave[choices[i]][key]["sum"]=national_ave[choices[i]][key]["sum"]+obj;
-                                national_ave[choices[i]][key]["count"]=national_ave[choices[i]][key]["count"]+1;
+                                national_ave[choices[i]][key]={};
+                                national_ave[choices[i]][key].sum=0;
+                                national_ave[choices[i]][key].count=0;
+                                national_ave[choices[i]][key].sum=national_ave[choices[i]][key].sum+obj;
+                                national_ave[choices[i]][key].count=national_ave[choices[i]][key].count+1;
                             }
                         }
                         else{
-                            var obj = Number(data[choices[i]][j][key])
+                            let obj = Number(data[choices[i]][j][key]);
                             if (obj>0){
-                                national_ave[choices[i]][key]["sum"]=national_ave[choices[i]][key]["sum"]+obj;
-                                national_ave[choices[i]][key]["count"]=national_ave[choices[i]][key]["count"]+1;
+                                national_ave[choices[i]][key].sum=national_ave[choices[i]][key].sum+obj;
+                                national_ave[choices[i]][key].count=national_ave[choices[i]][key].count+1;
                             }
                         }
                     }
@@ -70,9 +70,9 @@ function drawlinechart_houseprice(data,choices,cities){
 
             for (let key in national_ave[choices[i]]){
                 if (!national_ave[choices[i]].hasOwnProperty(key)) continue;
-                national_ave[choices[i]][key]["ave"]=national_ave[choices[i]][key]["sum"]/national_ave[choices[i]][key]["count"]
-                if (national_ave[choices[i]][key]["ave"] > max_ave){
-                    max_ave = national_ave[choices[i]][key]["ave"]
+                national_ave[choices[i]][key].ave=national_ave[choices[i]][key].sum/national_ave[choices[i]][key].count;
+                if (national_ave[choices[i]][key].ave > max_ave){
+                    max_ave = national_ave[choices[i]][key].ave;
                 }
                 //console.log(key)
                 //console.log(national_ave[choices[i]][key]["ave"])
@@ -90,14 +90,14 @@ function drawlinechart_houseprice(data,choices,cities){
             "ListPrice_Sfr":"pink",
             "ListPrice_AllHomes":"gray"
 
-        }
+        };
         //console.log(colors["ListPrice_AllHomes"])
 
         //let colors = ["red","orange","yellow","green","cyan","blue","pink","purple","gray"]
 
 
         if (choice_length>8){
-            alert("Too Many House Types Are Picked. Please Pick Less Than 9 Types")
+            alert("Too Many House Types Are Picked. Please Pick Less Than 9 Types");
         }
         else{
 
@@ -106,43 +106,43 @@ function drawlinechart_houseprice(data,choices,cities){
             //x.domain()
             var LineFunction = d3.line()
                 .x(function(d) { return x(d.date); })
-                .y(function(d) { return y(d.price); })
-            let data_list = []
+                .y(function(d) { return y(d.price); });
+            let data_list = [];
 
             svg.append("g").append("text")
                 .text("National Average List Price")
                 .attr("y", 25)
                 .attr("x",200)
                 .attr("dy", "0.71em")
-                .attr("fill", "black")
+                .attr("fill", "black");
 
-            let x_domain = []
+            let x_domain = [];
 
 
 
             for (let i = 0;i<choice_length;i++){
 
-                let ave_data = []
+                let ave_data = [];
                 for (let key in national_ave[choices[i]]){
                     if (!national_ave[choices[i]].hasOwnProperty(key)) continue;
-                    temp = {}
-                    temp["date"]=new Date(key)
-                    temp["price"]=national_ave[choices[i]][key]["ave"]
-                    ave_data.push(temp)
+                    temp = {};
+                    temp.date=new Date(key);
+                    temp.price=national_ave[choices[i]][key].ave;
+                    ave_data.push(temp);
                     //console.log(temp)
                 }
 
                 ave_data.sort(function(a, b){
-                    return a.date-b.date //sort by date ascending
-                })
-                data_list.push(ave_data)
+                    return a.date-b.date; //sort by date ascending
+                });
+                data_list.push(ave_data);
                 if (x_domain.length == 0){
-                    x_domain = d3.extent(ave_data, function(d) { return d.date; })
+                    x_domain = d3.extent(ave_data, function(d) { return d.date; });
                 }
                 else{
-                    let temp = d3.extent(ave_data, function(d) { return d.date; })
+                    let temp = d3.extent(ave_data, function(d) { return d.date; });
                     if (x_domain[0]>temp[0]){
-                        x_domain = temp
+                        x_domain = temp;
                     }
                 }
                 x.domain(x_domain);
@@ -153,7 +153,7 @@ function drawlinechart_houseprice(data,choices,cities){
                     .attr("d", LineFunction)
                     .style("stroke",colors[choices[i]])
                     .style("stroke-width",3)
-                    .style("fill","none")
+                    .style("fill","none");
 
                 priceplot
                     .on("mouseover", function(d){
@@ -167,7 +167,7 @@ function drawlinechart_houseprice(data,choices,cities){
                             .attr("fill", colors[choices[i]])
                             .text(choices[i]);
                     })
-                    .on("mouseout", function(){svg.select("#"+choices[i]).remove()})
+                    .on("mouseout", function(){svg.select("#"+choices[i]).remove();});
 
                 //console.log(d3.extent(ave_data, function(d) { return d.date; }))
             }
@@ -184,10 +184,10 @@ function drawlinechart_houseprice(data,choices,cities){
         }
     }
     else if (city_length*choice_length>8){
-        alert("Too many lines are requested. Please only choose less than 9 lines to display")
+        alert("Too many lines are requested. Please only choose less than 9 lines to display");
     }
     else if (city_length>4){
-        alert("Too many cities are requested. Please only choose less than 5 cities to display")
+        alert("Too many cities are requested. Please only choose less than 5 cities to display");
     }
     else{
 
@@ -203,25 +203,25 @@ function drawlinechart_houseprice(data,choices,cities){
             "ListPrice_Sfr":"pink",
             "ListPrice_AllHomes":"gray"
 
-        }
-        let linetype = ["5,5","10,10","20,10,5,5,5,10","5,0"]
-        let max_price = 0
-        let all_data = []
-        let date_extent = []
+        };
+        let linetype = ["5,5","10,10","20,10,5,5,5,10","5,0"];
+        let max_price = 0;
+        let all_data = [];
+        let date_extent = [];
         for(let i = 0;i<choice_length;i++){
-            let this_choice = {}
-            this_choice["choice"]=choices[i]
-            let city_data = []
+            let this_choice = {};
+            this_choice.choice=choices[i];
+            let city_data = [];
 
 
-            let cur_choice_len = data[choices[i]].length
+            let cur_choice_len = data[choices[i]].length;
             for (let j=0;j<city_length;j++){
-                let county_name = cities[j][0]
-                let state_name = cities[j][1]
-                let cur_choice_data = {}
-                cur_choice_data["county"]=county_name
-                cur_choice_data["state"]=state_name
-                cur_choice_data["data"]=[]
+                let county_name = cities[j][0];
+                let state_name = cities[j][1];
+                let cur_choice_data = {};
+                cur_choice_data.county=county_name;
+                cur_choice_data.state=state_name;
+                cur_choice_data.data=[];
                 //console.log(county_name)
                 //console.log(state_name)
                 //console.log(data[choices[i]][j])
@@ -229,37 +229,37 @@ function drawlinechart_houseprice(data,choices,cities){
                     //console.log(data[choices[i]][k]["CountyName"])
                     //console.log(data[choices[i]][k]["State"])
 
-                    if ((data[choices[i]][k]["CountyName"]==county_name)&&(data[choices[i]][k]["State"]==state_name)){
+                    if ((data[choices[i]][k].CountyName==county_name)&&(data[choices[i]][k].State==state_name)){
                         for (let key in data[choices[i]][k]){
                             if (!data[choices[i]][k].hasOwnProperty(key)) continue;
                             if ((key!="CountyName")&&(key!="Metro")&&(key!="RegionName")&&(key!="SizeRank")&&(key!="State")){
 
-                                let temp = {}
-                                temp["date"]=new Date(key)
-                                temp["price"]=Number(data[choices[i]][k][key])
-                                cur_choice_data["data"].push(temp)
+                                let temp = {};
+                                temp.date=new Date(key);
+                                temp.price=Number(data[choices[i]][k][key]);
+                                cur_choice_data.data.push(temp);
                                 if (max_price<Number(data[choices[i]][k][key])){
-                                    max_price = Number(data[choices[i]][k][key])
+                                    max_price = Number(data[choices[i]][k][key]);
                                 }
                             }
                         }
-                        cur_choice_data["data"].sort(function(a, b){
-                            return a.date-b.date //sort by date ascending
-                        })
+                        cur_choice_data.data.sort(function(a, b){
+                            return a.date-b.date; //sort by date ascending
+                        });
 
                         if (date_extent.length==0){
-                            date_extent = d3.extent(cur_choice_data["data"], function(d) { return d.date; })
+                            date_extent = d3.extent(cur_choice_data.data, function(d) { return d.date; });
                         }
                         else{
-                            let temp = d3.extent(cur_choice_data["data"], function(d) { return d.date; })
+                            let temp = d3.extent(cur_choice_data.data, function(d) { return d.date; });
                             if (date_extent[0]>temp[0]){
-                                date_extent = temp
+                                date_extent = temp;
                             }
                         }
 
                         //console.log(cur_choice_data)
 
-                        city_data.push(cur_choice_data)
+                        city_data.push(cur_choice_data);
 
                         break;
 
@@ -267,9 +267,9 @@ function drawlinechart_houseprice(data,choices,cities){
                 }
             }
             //I should have all of the data for this choice now, which is stored in city_data
-            this_choice["data"]=city_data
+            this_choice.data=city_data;
             //console.log(city_data)
-            all_data.push(this_choice)
+            all_data.push(this_choice);
         }
         //I should have all the data I needed now, which is all_data
 
@@ -280,9 +280,9 @@ function drawlinechart_houseprice(data,choices,cities){
         //x.domain()
         let LineFunction = d3.line()
             .x(function(d) { return x(d.date); })
-            .y(function(d) { return y(d.price); })
+            .y(function(d) { return y(d.price); });
 
-        let data_list = []
+        let data_list = [];
         /*
                 svg.append("g").append("text")
                     .text("National Average List Price")
@@ -292,47 +292,47 @@ function drawlinechart_houseprice(data,choices,cities){
                     .attr("fill", "black")
                     */
 
-        x.domain(date_extent)
+        x.domain(date_extent);
         //console.log(date_extent)
 
 
 
         for (let i = 0;i<all_data.length;i++){
-            let this_color = colors[all_data[i]["choice"]]
+            let this_color = colors[all_data[i].choice];
             //console.log(this_color)
-            for (let j = 0;j<all_data[i]["data"].length;j++){
+            for (let j = 0;j<all_data[i].data.length;j++){
                 //console.log(all_data[i]["data"][j]["data"])
-                zero_range = 0
+                zero_range = 0;
                 //let k = 0
-                while(all_data[i]["data"][j]["data"][0]["price"]==0){
-                    all_data[i]["data"][j]["data"].shift()
+                while(all_data[i].data[j].data[0].price==0){
+                    all_data[i].data[j].data.shift();
 
                 }
-                console.log(all_data[i]["data"][j]["data"])
+                console.log(all_data[i].data[j].data);
 
-                let this_line = linetype[j]
+                let this_line = linetype[j];
                 let priceplot = svg.append("g").append("path")
                     .attr("transform", "translate(0," + height + ")"+" scale(1,-1)")
-                    .data([all_data[i]["data"][j]["data"]])
+                    .data([all_data[i].data[j].data])
                     .attr("d", LineFunction)
                     .style("stroke",this_color)
                     .style("stroke-width",3)
                     .style("stroke-dasharray",this_line)
-                    .style("fill","none")
+                    .style("fill","none");
 
                 priceplot
                     .on("mouseover", function(d){
                         svg.append("g")
-                            .attr("id",all_data[i]["choice"]+all_data[i]["data"][j]["county"])
+                            .attr("id",all_data[i].choice+all_data[i].data[j].county)
                             .append("text")
                             //.attr("transform", "rotate(-90)")
                             .attr("y", 45)
                             .attr("x",200)
                             .attr("dy", "0.71em")
                             .attr("fill", this_color)
-                            .text(all_data[i]["choice"]+" "+all_data[i]["data"][j]["county"]);
+                            .text(all_data[i].choice+" "+all_data[i].data[j].county);
                     })
-                    .on("mouseout", function(){svg.select("#"+all_data[i]["choice"]+all_data[i]["data"][j]["county"]).remove()})
+                    .on("mouseout", function(){svg.select("#"+all_data[i].choice+all_data[i].data[j].county).remove();});
 
 
             }
@@ -364,13 +364,13 @@ function drawlinechart_houseprice(data,choices,cities){
 }
 
 function drawlinechart(){
-    let csvfile = "data/economy/ecodata.csv"
+    let csvfile = "data/economy/ecodata.csv";
 
-    let choices = []
+    let choices = [];
 
     for (let i =0;i < document.getElementsByName("choice").length;i++){
         if(document.getElementsByName("choice")[i].checked){
-            choices.push(document.getElementsByName("choice")[i].value)
+            choices.push(document.getElementsByName("choice")[i].value);
         }
 
     }
@@ -383,15 +383,15 @@ function drawlinechart(){
             .attr("height",500);
             */
 
-    var margin = {top: 20, right: 20, bottom: 30, left: 50}
-    var width = 960 - margin.left - margin.right
-    var height = 500 - margin.top - margin.bottom
+    var margin = {top: 20, right: 20, bottom: 30, left: 50};
+    var width = 960 - margin.left - margin.right;
+    var height = 500 - margin.top - margin.bottom;
 
     var svg = d3.select("#financial").append("svg")
         .attr("width",960)
         .attr("height",500)
         .append("g")
-        .attr("transform","translate(" + margin.left + ", 0)")
+        .attr("transform","translate(" + margin.left + ", 0)");
 
     var parseTime = d3.timeFormat("%m/%d/%Y");
     var x = d3.scaleTime().range([0, width]);
@@ -399,19 +399,19 @@ function drawlinechart(){
     var stockscale = d3.scaleLinear().range([0, height-20]);
     var unemploymentscale = d3.scaleLinear().range([0, height-20]);
     var mortgagescale = d3.scaleLinear().range([0, height-20]);
-    var stockscale_axis = d3.scaleLinear().range([height-20, 0])
+    var stockscale_axis = d3.scaleLinear().range([height-20, 0]);
     var unemploymentscale_axis = d3.scaleLinear().range([height-20,0]);
     var mortgagescale_axis = d3.scaleLinear().range([height-20,0]);
 
     var StockFunction = d3.line()
         .x(function(d) { return x(d.date); })
-        .y(function(d) { return stockscale(d.stock); })
+        .y(function(d) { return stockscale(d.stock); });
     var MortgageFunction = d3.line()
         .x(function(d) { return x(d.date); })
-        .y(function(d) { return mortgagescale(d.mortgage); })
+        .y(function(d) { return mortgagescale(d.mortgage); });
     var UnemploymentFunction = d3.line()
         .x(function(d) { return x(d.date); })
-        .y(function(d) { return unemploymentscale(d.unemployment); })
+        .y(function(d) { return unemploymentscale(d.unemployment); });
 
     d3.csv(csvfile, function(error, data) {
         if (error) throw error;
@@ -419,7 +419,7 @@ function drawlinechart(){
         // format the data
         data.forEach(function(d) {
 
-            let temp = new Date(d.date)
+            let temp = new Date(d.date);
             //console.log(temp)
 
             d.date = temp;
@@ -439,8 +439,8 @@ function drawlinechart(){
                 */
         x.domain(d3.extent(data, function(d) { return d.date; }));
         y.domain([0, d3.max(data, function(d) { return d.stock; })]);
-        var stockmax = d3.max(data, function(d) { return d.stock; })
-        console.log(stockmax)
+        var stockmax = d3.max(data, function(d) { return d.stock; });
+        console.log(stockmax);
         stockscale_axis.domain([0, 22500]);
         stockscale.domain([0, 22500]);
         unemploymentscale_axis.domain([0, d3.max(data, function(d) { return d.unemployment; })]);
@@ -461,7 +461,7 @@ function drawlinechart(){
                     .attr("d", StockFunction)
                     .style("stroke","red")
                     .style("stroke-width",2)
-                    .style("fill","none")
+                    .style("fill","none");
 
                 stockplot
                     .on("mouseover", function(d){
@@ -480,7 +480,7 @@ function drawlinechart(){
                             .text("Stock Index");
                     })
                     .on("mouseout", function(){svg.select("#stock_yaxis").remove();
-                        svg.select("#stock_text").remove()});
+                        svg.select("#stock_text").remove();});
 
             }
             else if (choices[i]== "mortgage"){
@@ -490,13 +490,13 @@ function drawlinechart(){
                     .attr("d", MortgageFunction)
                     .style("stroke","green")
                     .style("stroke-width",3)
-                    .style("fill","none")
+                    .style("fill","none");
                 mortgageplot
                     .on("mouseover", function(d){
                         svg.append("g")
                             .attr("id","mortgage_yaxis")
                             .attr("transform","translate(0,20)","scale(1,-1)")
-                            .call(d3.axisLeft(mortgagescale_axis))
+                            .call(d3.axisLeft(mortgagescale_axis));
                         svg.append("g")
                             .attr("id","mortgage_text")
                             .append("text")
@@ -508,7 +508,7 @@ function drawlinechart(){
                             .text("Mortgage Interest Rate");
                     })
                     .on("mouseout", function(){svg.select("#mortgage_yaxis").remove();
-                        svg.select("#mortgage_text").remove()});
+                        svg.select("#mortgage_text").remove();});
 
             }
             else if (choices[i]=="unemployment"){
@@ -518,7 +518,7 @@ function drawlinechart(){
                     .attr("d", UnemploymentFunction)
                     .style("stroke","blue")
                     .style("stroke-width",3)
-                    .style("fill","none")
+                    .style("fill","none");
 
                 unemploymentplot
                     .on("mouseover", function(d){
@@ -534,10 +534,10 @@ function drawlinechart(){
                             .attr("x",200)
                             .attr("dy", "0.71em")
                             .attr("fill", "blue")
-                            .text("Unemployment Rate")
+                            .text("Unemployment Rate");
                     })
                     .on("mouseout", function(){svg.select("#unemployment_yaxis").remove();
-                        svg.select("#unemployment_text").remove()});
+                        svg.select("#unemployment_text").remove();});
 
             }
         }
