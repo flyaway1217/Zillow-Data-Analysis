@@ -7,7 +7,7 @@
 # Python release: 3.6.0
 #
 # Date: 2017-11-25 21:43:04
-# Last modified: 2017-11-25 21:59:29
+# Last modified: 2017-11-25 22:22:25
 
 """
 Combine all the map data.
@@ -23,6 +23,7 @@ names = os.listdir('states/')
 
 
 def read(path, name):
+    print(name)
     with open(path, encoding='utf8') as f:
         m = json.load(f)
         allMap[name] = m
@@ -30,9 +31,9 @@ def read(path, name):
 
 for name in names:
     if name.endswith('.json'):
-        print(name)
+        key = name.replace('.json', '')
         path = os.path.join('states', name)
-        read(path, name)
+        read(path, key)
 
 path = 'map/us_states.json'
 read(path, 'usa')

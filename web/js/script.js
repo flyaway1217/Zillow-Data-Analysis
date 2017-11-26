@@ -56,5 +56,5 @@ d3.json(path, function(data){
 
     })
     */
-    drawMap('usa');
+    //drawMap('usa');
 });
