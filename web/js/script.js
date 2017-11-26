@@ -56,6 +56,5 @@ d3.json(path, function(data){
 
     })
     */
-    map = new Map();
-    map.drawMap();
+    drawMap('usa');
 });
