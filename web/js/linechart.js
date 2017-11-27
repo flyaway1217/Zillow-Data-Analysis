@@ -28,6 +28,15 @@ function drawlinechart_houseprice(data,choices,cities){
     var x = d3.scaleTime().range([0, width]);
     var y_axis = d3.scaleLinear().range([height-20, 0]);
     var y = d3.scaleLinear().range([0,height-20]);
+/*
+    if (data == []){
+        x.domain("[Thu Dec 31 2009 17:00:00 GMT-0700 (Mountain Standard Time), Mon Jul 31 2017 18:00:00 GMT-0600 (Mountain Daylight Time)]")
+        svg.append("g")
+            .attr("transform", "translate(0," + height + ")")
+            .call(d3.axisBottom(x));
+        return
+    }
+    */
     let choice_length = choices.length;
     let city_length = cities.length;
     for(let i = 0;i<choice_length;i++){
@@ -110,12 +119,18 @@ function drawlinechart_houseprice(data,choices,cities){
                 .y(function(d) { return y(d.price); });
             let data_list = [];
 
-            svg.append("g").append("text")
-                .text("National Average List Price")
-                .attr("y", 25)
-                .attr("x",200)
-                .attr("dy", "0.71em")
-                .attr("fill", "black");
+            if (data.length >0){
+
+                svg.append("g").append("text")
+                    .text("National Average List Price")
+                    .attr("y", 25)
+                    .attr("x",200)
+                    .attr("dy", "0.71em")
+                    .attr("fill", "black");
+
+            }
+
+
 
             let x_domain = [];
 
@@ -147,6 +162,7 @@ function drawlinechart_houseprice(data,choices,cities){
                     }
                 }
                 x.domain(x_domain);
+                //console.log(x_domain)
                 //console.log(d3.extent(ave_data, function(d) { return d.date; }))
                 var priceplot = svg.append("g").append("path")
                     .attr("transform", "translate(0," + height + ")"+" scale(1,-1)")
@@ -367,6 +383,11 @@ function drawlinechart_houseprice(data,choices,cities){
 function drawlinechart(){
     let csvfile = "data/economy/ecodata.csv";
 
+    if (document.getElementsByName("history")[0].checked){
+        console.log("history")
+        csvfile = "data/economy/ecodata_history.csv"
+    }
+
     let choices = [];
 
     for (let i =0;i < document.getElementsByName("choice").length;i++){
@@ -556,5 +577,7 @@ function drawlinechart(){
     });
 
 }
+drawlinechart_houseprice([],[],[])
+drawlinechart()
 
 
