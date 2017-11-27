@@ -25,6 +25,9 @@ function drawlinechart_houseprice(data,choices,cities){
     var margin = {top: 20, right: 20, bottom: 30, left: 50};
     var width = svgwidth - margin.left - margin.right;
     var height = svgheight - margin.top - margin.bottom;
+    let x1 = new Date("2010-01");
+    let x2 = new Date("2017-09");
+    let x_range = [x1,x2]
 
 /*
 
@@ -37,6 +40,7 @@ function drawlinechart_houseprice(data,choices,cities){
     var x = d3.scaleTime().range([0, width]);
     var y_axis = d3.scaleLinear().range([height-20, 0]);
     var y = d3.scaleLinear().range([0,height-20]);
+    x.domain(x_range)
 /*
     if (data == []){
         x.domain("[Thu Dec 31 2009 17:00:00 GMT-0700 (Mountain Standard Time), Mon Jul 31 2017 18:00:00 GMT-0600 (Mountain Daylight Time)]")
@@ -173,6 +177,7 @@ function drawlinechart_houseprice(data,choices,cities){
                     }
                 }
                 x.domain(x_domain);
+                x.domain(x_range);
                 //x.domain("[Thu Dec 31 2009 17:00:00 GMT-0700 (Mountain Standard Time), Mon Jul 31 2017 18:00:00 GMT-0600 (Mountain Daylight Time)]")
                 //console.log(x_domain)
                 //console.log(d3.extent(ave_data, function(d) { return d.date; }))
@@ -325,6 +330,7 @@ function drawlinechart_houseprice(data,choices,cities){
 
 
         x.domain(date_extent);
+        x.domain(x_range)
         //x.domain("[Thu Dec 31 2009 17:00:00 GMT-0700 (Mountain Standard Time), Mon Jul 31 2017 18:00:00 GMT-0600 (Mountain Daylight Time)]")
         //console.log(date_extent)
 
