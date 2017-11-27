@@ -14,17 +14,26 @@ function drawlinechart_houseprice(data,choices,cities){
     console.log(cities);
     //cities = [["Philadelphia","PA"],["Maricopa","AZ"]];
 
-    d3.select("#price").selectAll("svg").remove();
+    d3.select("#price").selectAll("path").remove();
+    d3.select("#price").select("#price_x").remove();
+    d3.select("#price").select("#price_y").remove();
+
+    var svg = d3.select("#price_chart")
+
+    let svgwidth = parseInt(svg.style('width'));
+    let svgheight = parseInt(svg.style('height'));
     var margin = {top: 20, right: 20, bottom: 30, left: 50};
-    var width = 960 - margin.left - margin.right;
-    var height = 500 - margin.top - margin.bottom;
+    var width = svgwidth - margin.left - margin.right;
+    var height = svgheight - margin.top - margin.bottom;
+
+/*
 
     var svg = d3.select("#price").append("svg")
         .attr("width",960)
         .attr("height",500)
         .append("g")
         .attr("transform","translate(" + margin.left + ", 0)");
-
+*/
     var x = d3.scaleTime().range([0, width]);
     var y_axis = d3.scaleLinear().range([height-20, 0]);
     var y = d3.scaleLinear().range([0,height-20]);
@@ -119,11 +128,13 @@ function drawlinechart_houseprice(data,choices,cities){
                 .y(function(d) { return y(d.price); });
             let data_list = [];
 
-            if (data.length >0){
+            if (data!=[]){
+
+                console.log("hahaha")
 
                 svg.append("g").append("text")
                     .text("National Average List Price")
-                    .attr("y", 25)
+                    .attr("y", 55)
                     .attr("x",200)
                     .attr("dy", "0.71em")
                     .attr("fill", "black");
@@ -162,10 +173,11 @@ function drawlinechart_houseprice(data,choices,cities){
                     }
                 }
                 x.domain(x_domain);
+                //x.domain("[Thu Dec 31 2009 17:00:00 GMT-0700 (Mountain Standard Time), Mon Jul 31 2017 18:00:00 GMT-0600 (Mountain Daylight Time)]")
                 //console.log(x_domain)
                 //console.log(d3.extent(ave_data, function(d) { return d.date; }))
                 var priceplot = svg.append("g").append("path")
-                    .attr("transform", "translate(0," + height + ")"+" scale(1,-1)")
+                    .attr("transform", "translate(35," + height + ")"+" scale(1,-1)")
                     .data([ave_data])
                     .attr("d", LineFunction)
                     .style("stroke",colors[choices[i]])
@@ -191,12 +203,14 @@ function drawlinechart_houseprice(data,choices,cities){
 
             // Add the X Axis
             svg.append("g")
-                .attr("transform", "translate(0," + height + ")")
+                .attr("id","price_x")
+                .attr("transform", "translate(35," + height + ")")
                 .call(d3.axisBottom(x));
 
             // Add the Y Axis
             svg.append("g")
-                .attr("transform","translate(0,20)","scale(1,-1)")
+                .attr("id","price_y")
+                .attr("transform","translate(35,20)","scale(1,-1)")
                 .call(d3.axisLeft(y_axis));
         }
     }
@@ -300,16 +314,18 @@ function drawlinechart_houseprice(data,choices,cities){
             .y(function(d) { return y(d.price); });
 
         let data_list = [];
-        /*
-                svg.append("g").append("text")
-                    .text("National Average List Price")
-                    .attr("y", 25)
-                    .attr("x",200)
-                    .attr("dy", "0.71em")
-                    .attr("fill", "black")
-                    */
+/*
+        svg.append("g").append("text")
+            .text("National Average List Price")
+            .attr("y", 100)
+            .attr("x",width/2)
+            .attr("dy", "0.71em")
+            .attr("fill", "black")
+            */
+
 
         x.domain(date_extent);
+        //x.domain("[Thu Dec 31 2009 17:00:00 GMT-0700 (Mountain Standard Time), Mon Jul 31 2017 18:00:00 GMT-0600 (Mountain Daylight Time)]")
         //console.log(date_extent)
 
 
@@ -329,7 +345,7 @@ function drawlinechart_houseprice(data,choices,cities){
 
                 let this_line = linetype[j];
                 let priceplot = svg.append("g").append("path")
-                    .attr("transform", "translate(0," + height + ")"+" scale(1,-1)")
+                    .attr("transform", "translate(35," + height + ")"+" scale(1,-1)")
                     .data([all_data[i].data[j].data])
                     .attr("d", LineFunction)
                     .style("stroke",this_color)
@@ -360,12 +376,14 @@ function drawlinechart_houseprice(data,choices,cities){
 
         // Add the X Axis
         svg.append("g")
-            .attr("transform", "translate(0," + height + ")")
+            .attr("id","price_x")
+            .attr("transform", "translate(35," + height + ")")
             .call(d3.axisBottom(x));
 
         // Add the Y Axis
         svg.append("g")
-            .attr("transform","translate(0,20)","scale(1,-1)")
+            .attr("id","price_y")
+            .attr("transform","translate(35,20)","scale(1,-1)")
             .call(d3.axisLeft(y_axis));
 
 
@@ -398,23 +416,32 @@ function drawlinechart(){
     }
     //choices = selected
 
-    d3.select("#financial").selectAll("svg").remove();
+    d3.select("#financial").select("#xaxis").remove()
+    d3.select("#financial").selectAll("path").remove();
+
     /*
     var svg = d3.select("#financial").append("svg")
             .attr("width",960)
             .attr("height",500);
             */
 
+    var svg = d3.select("#financial_chart")
+
+    let svgwidth = parseInt(svg.style('width'));
+    let svgheight = parseInt(svg.style('height'));
+
     var margin = {top: 20, right: 20, bottom: 30, left: 50};
-    var width = 960 - margin.left - margin.right;
-    var height = 500 - margin.top - margin.bottom;
+    var width = svgwidth - margin.left - margin.right;
+    var height = svgheight - margin.top - margin.bottom;
+
+    /*
 
     var svg = d3.select("#financial").append("svg")
         .attr("width",960)
         .attr("height",500)
         .append("g")
         .attr("transform","translate(" + margin.left + ", 0)");
-
+    */
     var parseTime = d3.timeFormat("%m/%d/%Y");
     var x = d3.scaleTime().range([0, width]);
     var y = d3.scaleLinear().range([height, 0]);
@@ -478,7 +505,7 @@ function drawlinechart(){
         for(let i = 0;i<choice_length;i++){
             if (choices[i]== "stock"){
                 var stockplot = svg.append("g").append("path")
-                    .attr("transform", "translate(0," + height + ")"+" scale(1,-1)")
+                    .attr("transform", "translate(25," + height + ")"+" scale(1,-1)")
                     .data([data])
                     .attr("d", StockFunction)
                     .style("stroke","red")
@@ -489,7 +516,7 @@ function drawlinechart(){
                     .on("mouseover", function(d){
                         svg.append("g")
                             .attr("id","stock_yaxis")
-                            .attr("transform","translate(0,20)","scale(1,-1)")
+                            .attr("transform","translate(25,20)","scale(1,-1)")
                             .call(d3.axisLeft(stockscale_axis));
                         svg.append("g")
                             .attr("id","stock_text")
@@ -507,7 +534,7 @@ function drawlinechart(){
             }
             else if (choices[i]== "mortgage"){
                 var mortgageplot = svg.append("g").append("path")
-                    .attr("transform", "translate(0," + height + ")"+" scale(1,-1)")
+                    .attr("transform", "translate(25," + height + ")"+" scale(1,-1)")
                     .data([data])
                     .attr("d", MortgageFunction)
                     .style("stroke","green")
@@ -517,7 +544,7 @@ function drawlinechart(){
                     .on("mouseover", function(d){
                         svg.append("g")
                             .attr("id","mortgage_yaxis")
-                            .attr("transform","translate(0,20)","scale(1,-1)")
+                            .attr("transform","translate(25,20)","scale(1,-1)")
                             .call(d3.axisLeft(mortgagescale_axis));
                         svg.append("g")
                             .attr("id","mortgage_text")
@@ -535,7 +562,7 @@ function drawlinechart(){
             }
             else if (choices[i]=="unemployment"){
                 var unemploymentplot = svg.append("g").append("path")
-                    .attr("transform", "translate(0," + height + ")"+" scale(1,-1)")
+                    .attr("transform", "translate(25," + height + ")"+" scale(1,-1)")
                     .data([data])
                     .attr("d", UnemploymentFunction)
                     .style("stroke","blue")
@@ -546,7 +573,7 @@ function drawlinechart(){
                     .on("mouseover", function(d){
                         svg.append("g")
                             .attr("id","unemployment_yaxis")
-                            .attr("transform","translate(0,20)","scale(1,-1)")
+                            .attr("transform","translate(25,20)","scale(1,-1)")
                             .call(d3.axisLeft(unemploymentscale_axis));
                         svg.append("g")
                             .attr("id","unemployment_text")
@@ -566,7 +593,8 @@ function drawlinechart(){
 
         // Add the X Axis
         svg.append("g")
-            .attr("transform", "translate(0," + height + ")")
+            .attr("id","xaxis")
+            .attr("transform", "translate(25," + height + ")")
             .call(d3.axisBottom(x));
 
         // Add the Y Axis
