@@ -11,7 +11,8 @@ function getSelectedValue(name){
 
 function drawlinechart_houseprice(data,choices,cities){
 
-    cities = [["Philadelphia","PA"],["Maricopa","AZ"]];
+    console.log(cities);
+    //cities = [["Philadelphia","PA"],["Maricopa","AZ"]];
 
     d3.select("#price").selectAll("svg").remove();
     var margin = {top: 20, right: 20, bottom: 30, left: 50};
@@ -555,3 +556,5 @@ function drawlinechart(){
     });
 
 }
+
+

@@ -9,6 +9,7 @@ path = d3.geoPath()
 .projection(projection);
 
 let selected_states = [];
+let STATE;
 
 // Prepare the color scale.
 let color = d3.scaleLinear()
@@ -17,6 +18,62 @@ let color = d3.scaleLinear()
 
 tip = d3.tip().attr('class', 'd3-tip').html(function(d) { return d.properties.NAME || d.properties.NAME10; });
 d3.select('#whole_map').call(tip);
+
+
+let STATES_MAPPING={
+    "State":"Abbreviation",
+    "Alabama":"AL",
+    "Alaska":"AK",
+    "Arizona":"AZ",
+    "Arkansas":"AR",
+    "California":"CA",
+    "Colorado":"CO",
+    "Connecticut":"CT",
+    "Delaware":"DE",
+    "District of Columbia":"DC",
+    "Florida":"FL",
+    "Georgia":"GA",
+    "Hawaii":"HI",
+    "Idaho":"ID",
+    "Illinois":"IL",
+    "Indiana":"IN",
+    "Iowa":"IA",
+    "Kansas":"KS",
+    "Kentucky":"KY",
+    "Louisiana":"LA",
+    "Maine":"ME",
+    "Montana":"MT",
+    "Nebraska":"NE",
+    "Nevada":"NV",
+    "New Hampshire":"NH",
+    "New Jersey":"NJ",
+    "New Mexico":"NM",
+    "New York":"NY",
+    "North Carolina":"NC",
+    "North Dakota":"ND",
+    "Ohio":"OH",
+    "Oklahoma":"OK",
+    "Oregon":"OR",
+    "Maryland":"MD",
+    "Massachusetts":"MA",
+    "Michigan":"MI",
+    "Minnesota":"MN",
+    "Mississippi":"MS",
+    "Missouri":"MO",
+    "Pennsylvania":"PA",
+    "Rhode Island":"RI",
+    "South Carolina":"SC",
+    "South Dakota":"SD",
+    "Tennessee":"TN",
+    "Texas":"TX",
+    "Utah":"UT",
+    "Vermont":"VT",
+    "Virginia":"VA",
+    "Washington":"WA",
+    "West Virginia":"WV",
+    "Wisconsin":"WI",
+    "Wyoming":"WY",
+};
 
 d3.json('../data/map.json', function(json){
     color.domain([
@@ -50,6 +107,7 @@ d3.json('../data/map.json', function(json){
             d3.select('#map').transition().duration(1000).attr('viewBox', [0, 0, width, height]);
         }
         else if(typeof(state) === 'object'){
+            STATE = state.properties.NAME;
             let x0, y0, x1, y1;
             let bounds = path.bounds(state);
             x0 = bounds[0][0];
@@ -89,8 +147,8 @@ d3.json('../data/map.json', function(json){
 function buttonClick(d){
     if(typeof(d) === 'object'){
         let label = d.properties.NAME10;
-        if (selected_states.length < 5){
-            selected_states.push(label);
+        if (selected_states.length < 4){
+            selected_states.push([label, STATES_MAPPING[STATE]]);
         }
     } 
     let buttons = d3.select('#button').selectAll('button')

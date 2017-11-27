@@ -36,7 +36,7 @@ d3.json(path, function(data){
         }
         //console.log(getSelectedValue("Home_Type"))
 
-        drawlinechart_houseprice(data,selected_type,[]);
+        drawlinechart_houseprice(data,selected_type,selected_states);
 
 
     });
