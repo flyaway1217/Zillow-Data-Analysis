@@ -14,7 +14,7 @@ function drawlinechart_houseprice(data,choices,cities){
     //console.log(cities);
     //cities = [["Philadelphia","PA"],["Maricopa","AZ"]];
 
-    cities = [["Salt Lake","UT"]];
+    //cities = [["Salt Lake","UT"]];
 
     d3.select("#price").selectAll("path").remove();
     d3.select("#price").select("#price_x").remove();
