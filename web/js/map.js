@@ -4,7 +4,7 @@ let width = parseInt(svg.style('width'));
 let height = parseInt(svg.style('height'));
 let projection = d3.geoAlbersUsa()
             .translate([width/2, height/2])
-            .scale([width]);
+            .scale([width/2]);
 path = d3.geoPath()
 .projection(projection);
 
