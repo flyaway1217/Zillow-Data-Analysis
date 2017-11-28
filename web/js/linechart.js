@@ -11,8 +11,10 @@ function getSelectedValue(name){
 
 function drawlinechart_houseprice(data,choices,cities){
 
-    console.log(cities);
+    //console.log(cities);
     //cities = [["Philadelphia","PA"],["Maricopa","AZ"]];
+
+    cities = [["Salt Lake","UT"]];
 
     d3.select("#price").selectAll("path").remove();
     d3.select("#price").select("#price_x").remove();
@@ -141,9 +143,9 @@ function drawlinechart_houseprice(data,choices,cities){
 
             if ((size>0)&&(cities.length==0)){
 
-                console.log("hahaha")
-                console.log(data)
-                console.log(size)
+                //console.log("hahaha")
+                //console.log(data)
+                //console.log(size)
 
                 svg.append("g").append("text")
                     .text("National Average List Price")
@@ -356,7 +358,7 @@ function drawlinechart_houseprice(data,choices,cities){
                     all_data[i].data[j].data.shift();
 
                 }
-                console.log(all_data[i].data[j].data);
+                //console.log(all_data[i].data[j].data);
 
                 let this_line = linetype[j];
                 let priceplot = svg.append("g").append("path")
@@ -368,10 +370,14 @@ function drawlinechart_houseprice(data,choices,cities){
                     .style("stroke-dasharray",this_line)
                     .style("fill","none");
 
+
+
+
                 priceplot
                     .on("mouseover", function(d){
                         svg.append("g")
-                            .attr("id",all_data[i].choice+all_data[i].data[j].county)
+                            //.attr("id",all_data[i].choice+all_data[i].data[j].county)
+                            .attr("id","choicepluscounty")
                             .append("text")
                             //.attr("transform", "rotate(-90)")
                             .attr("y", 45)
@@ -380,7 +386,7 @@ function drawlinechart_houseprice(data,choices,cities){
                             .attr("fill", this_color)
                             .text(all_data[i].choice+" "+all_data[i].data[j].county);
                     })
-                    .on("mouseout", function(){svg.select("#"+all_data[i].choice+all_data[i].data[j].county).remove();});
+                    .on("mouseout", function(){svg.select("#choicepluscounty").remove();});
 
 
             }
@@ -417,7 +423,7 @@ function drawlinechart(){
     let csvfile = "data/economy/ecodata.csv";
 
     if (document.getElementsByName("history")[0].checked){
-        console.log("history")
+        //console.log("history")
         csvfile = "data/economy/ecodata_history.csv"
     }
 
@@ -504,7 +510,7 @@ function drawlinechart(){
         x.domain(d3.extent(data, function(d) { return d.date; }));
         y.domain([0, d3.max(data, function(d) { return d.stock; })]);
         var stockmax = d3.max(data, function(d) { return d.stock; });
-        console.log(stockmax);
+        //console.log(stockmax);
         stockscale_axis.domain([0, 22500]);
         stockscale.domain([0, 22500]);
         unemploymentscale_axis.domain([0, d3.max(data, function(d) { return d.unemployment; })]);
