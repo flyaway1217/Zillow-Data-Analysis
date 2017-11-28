@@ -12,11 +12,13 @@ function getSelectedValue(name){
 function drawlinechart_houseprice(data,choices,cities){
 
     //console.log(cities);
-    //cities = [["Philadelphia","PA"],["Maricopa","AZ"]];
+    cities = [["Philadelphia","PA"],["Maricopa","AZ"],["Salt Lake","UT"]];
 
     //cities = [["Salt Lake","UT"]];
 
     d3.select("#price").selectAll("path").remove();
+    d3.select("#price").selectAll("line").remove();
+    d3.select("#price").selectAll("text").remove();
     d3.select("#price").select("#price_x").remove();
     d3.select("#price").select("#price_y").remove();
 
@@ -24,7 +26,7 @@ function drawlinechart_houseprice(data,choices,cities){
 
     let svgwidth = parseInt(svg.style('width'));
     let svgheight = parseInt(svg.style('height'));
-    var margin = {top: 20, right: 20, bottom: 30, left: 50};
+    var margin = {top: 20, right: 170, bottom: 30, left: 50};
     var width = svgwidth - margin.left - margin.right;
     var height = svgheight - margin.top - margin.bottom;
     let x1 = new Date("2010-01");
@@ -160,6 +162,8 @@ function drawlinechart_houseprice(data,choices,cities){
 
             let x_domain = [];
 
+            let legendcount = 0;
+
 
 
             for (let i = 0;i<choice_length;i++){
@@ -199,20 +203,43 @@ function drawlinechart_houseprice(data,choices,cities){
                     .style("stroke",colors[choices[i]])
                     .style("stroke-width",3)
                     .style("fill","none");
+                svg.append("g").append("line")
+                    .attr("x1",svgwidth-180)
+                    .attr("y1",20*legendcount + 25)
+                    .attr("x2",svgwidth-160)
+                    .attr("y2",20*legendcount + 25)
+                    .style("stroke",colors[choices[i]])
+                    .style("stroke-width",3)
+
+                svg.append("g").append("text")
+                    .attr("id",choices[i])
+                    .attr("x",svgwidth-150)
+                    .attr("y",20*legendcount+30)
+                    .attr("fill", colors[choices[i]])
+                    .style("font-weight","normal")
+                    .text(choices[i].substr(10))
+
+                legendcount = legendcount+1
 
                 priceplot
                     .on("mouseover", function(d){
+                        svg.select("#"+choices[i])
+                            .style("font-weight",900)
+                        /*
                         svg.append("g")
                             .attr("id",choices[i])
                             .append("text")
                             //.attr("transform", "rotate(-90)")
-                            .attr("y", 45)
-                            .attr("x",200)
+                            .attr("y", 5)
+                            .attr("x",10)
                             .attr("dy", "0.71em")
                             .attr("fill", colors[choices[i]])
                             .text(choices[i]);
+                            */
                     })
-                    .on("mouseout", function(){svg.select("#"+choices[i]).remove();});
+                    .on("mouseout", function(){svg.select("#"+choices[i])
+                        .style("font-weight","normal");});
+
 
                 //console.log(d3.extent(ave_data, function(d) { return d.date; }))
             }
@@ -228,6 +255,14 @@ function drawlinechart_houseprice(data,choices,cities){
                 .attr("id","price_y")
                 .attr("transform","translate(35,20)","scale(1,-1)")
                 .call(d3.axisLeft(y_axis));
+            svg.append("g")
+                .attr("id","y_unit")
+                .append("text")
+                .attr("y",15)
+                .attr("x",40)
+                .attr("dy", "0.71em")
+                .text("($)")
+
         }
     }
     else if (city_length*choice_length>8){
@@ -255,10 +290,13 @@ function drawlinechart_houseprice(data,choices,cities){
         let max_price = 0;
         let all_data = [];
         let date_extent = [];
+        let legendcount = 0;
         for(let i = 0;i<choice_length;i++){
             let this_choice = {};
             this_choice.choice=choices[i];
             let city_data = [];
+
+
 
 
             let cur_choice_len = data[choices[i]].length;
@@ -370,11 +408,37 @@ function drawlinechart_houseprice(data,choices,cities){
                     .style("stroke-dasharray",this_line)
                     .style("fill","none");
 
+                let cur_text_id = all_data[i].choice+all_data[i].data[j].county.substr(0,2)+legendcount
+
+                console.log(cur_text_id)
+
+                svg.append("g").append("line")
+                    .attr("x1",svgwidth-180)
+                    .attr("y1",50*legendcount + 25)
+                    .attr("x2",svgwidth-60)
+                    .attr("y2",50*legendcount + 25)
+                    .style("stroke",this_color)
+                    .style("stroke-dasharray",this_line)
+                    .style("stroke-width",3)
+
+                svg.append("g").append("text")
+                    .attr("id",cur_text_id)
+                    .attr("x",svgwidth-180)
+                    .attr("y",50*legendcount+45)
+                    .attr("fill", this_color)
+                    .style("font-weight","normal")
+                    .text(all_data[i].data[j].county+" "+all_data[i].choice.substr(10))
+
+                legendcount = legendcount+1
+
 
 
 
                 priceplot
                     .on("mouseover", function(d){
+                        svg.select("#"+cur_text_id)
+                            .style("font-weight",900)
+                        /*
                         svg.append("g")
                             //.attr("id",all_data[i].choice+all_data[i].data[j].county)
                             .attr("id","choicepluscounty")
@@ -385,8 +449,10 @@ function drawlinechart_houseprice(data,choices,cities){
                             .attr("dy", "0.71em")
                             .attr("fill", this_color)
                             .text(all_data[i].choice+" "+all_data[i].data[j].county);
+                            */
                     })
-                    .on("mouseout", function(){svg.select("#choicepluscounty").remove();});
+                    .on("mouseout", function(){svg.select("#"+cur_text_id)
+                        .style("font-weight","normal");});
 
 
             }
