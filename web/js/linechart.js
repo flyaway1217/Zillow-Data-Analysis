@@ -132,9 +132,18 @@ function drawlinechart_houseprice(data,choices,cities){
                 .y(function(d) { return y(d.price); });
             let data_list = [];
 
-            if (data!=[]){
+            let size = 0, key;
+            for (key in data) {
+                if (data.hasOwnProperty(key)) size++;
+            }
+
+
+
+            if ((size>0)&&(cities.length==0)){
 
                 console.log("hahaha")
+                console.log(data)
+                console.log(size)
 
                 svg.append("g").append("text")
                     .text("National Average List Price")
@@ -611,7 +620,7 @@ function drawlinechart(){
     });
 
 }
-drawlinechart_houseprice([],[],[])
+drawlinechart_houseprice({},[],[])
 drawlinechart()
 
 
