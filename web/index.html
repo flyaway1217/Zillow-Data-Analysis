@@ -67,10 +67,15 @@
                     </div>
                     <div class='row' id="financial_choice">
                         <label class='mx-auto'>
-                            <input type="checkbox" name="choice" width="30" value = "mortgage" onclick="drawlinechart()"/>Mortgage Rate
-                            <input type="checkbox" name="choice" width="30" value ="stock" onclick="drawlinechart()"/>Stock Market Index
-                            <input type="checkbox" name="choice" width="30" value = "unemployment" onclick="drawlinechart()"/>Unemployment
-                            <input type="checkbox" name="history" width="30" value = "history" onclick="drawlinechart()"/>Longer History
+                            <input type="checkbox" id = "fc1" name="choice" width="30" value = "mortgage"/>Mortgage Rate
+                            <input type="checkbox" id = "fc2" name="choice" width="30" value ="stock"/>Stock Market Index
+                            <input type="checkbox" id = "fc3" name="choice" width="30" value = "unemployment"/>Unemployment
+                            <input type="checkbox" id = "fc4" name="history" width="30" value = "history"/>Longer History
+                        </label>
+                    </div>
+                    <div class='row' id="buyorrent">
+                        <label class='mx-auto'>
+                            <input type="checkbox" name="prratio" id="prratio" width="30" value = "ratio" />List Price/Monthly Rent
                         </label>
                     </div>
                     <div class='row' id="financial">

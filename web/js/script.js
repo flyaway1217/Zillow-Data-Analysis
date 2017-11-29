@@ -24,6 +24,8 @@ class Data{
 path = 'data/data.json';
 d3.json(path, function(data){
     console.log(data);
+    drawlinechart_houseprice({},[],[])
+    drawlinechart({},[])
     //console.log(data["ListPricePerSqft_1Bedroom"])
     d3.select("body").select("#hometypebutton").on("click",function(){
         let selected_type = [];
@@ -34,12 +36,42 @@ d3.json(path, function(data){
             }
 
         }
+
+
         //console.log(getSelectedValue("Home_Type"))
 
         drawlinechart_houseprice(data,selected_type,selected_states);
 
 
     });
+
+    d3.select("body").select("#prratio").on("click",function(){
+        drawlinechart(data,selected_states)
+
+    })
+
+    d3.select("body").select("#fc1").on("click",function(){
+
+        drawlinechart(data,selected_states)
+
+    })
+    d3.select("body").select("#fc2").on("click",function(){
+
+        drawlinechart(data,selected_states)
+
+    })
+    d3.select("body").select("#fc3").on("click",function(){
+
+        drawlinechart(data,selected_states)
+
+    })
+    d3.select("body").select("#fc4").on("click",function(){
+
+        drawlinechart(data,selected_states)
+
+    })
+
+
     /*
     d3.select("body").select("#economychoicebutton").on("click",function(){
 

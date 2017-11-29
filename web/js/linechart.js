@@ -12,7 +12,7 @@ function getSelectedValue(name){
 function drawlinechart_houseprice(data,choices,cities){
 
     //console.log(cities);
-    cities = [["Philadelphia","PA"],["Maricopa","AZ"],["Salt Lake","UT"]];
+    //cities = [["Philadelphia","PA"],["Maricopa","AZ"],["Salt Lake","UT"]];
 
     //cities = [["Salt Lake","UT"]];
 
@@ -410,7 +410,7 @@ function drawlinechart_houseprice(data,choices,cities){
 
                 let cur_text_id = all_data[i].choice+all_data[i].data[j].county.substr(0,2)+legendcount
 
-                console.log(cur_text_id)
+                //console.log(cur_text_id)
 
                 svg.append("g").append("line")
                     .attr("x1",svgwidth-180)
@@ -485,12 +485,25 @@ function drawlinechart_houseprice(data,choices,cities){
 
 }
 
-function drawlinechart(){
+function drawlinechart(odata,city){
+
+    //city = [["Queens","NY"]]
+    //city = [["Salt Lake","UT"]]
+    //city=[["Philadelphia","PA"]]
+   // city=[["Philadelphia","PA"],["Queens","NY"]]
     let csvfile = "data/economy/ecodata.csv";
 
+    let x1 = new Date("2010-01");
+    let x2 = new Date("2017-09");
+    let x_range = [x1,x2]
+
+
     if (document.getElementsByName("history")[0].checked){
-        //console.log("history")
         csvfile = "data/economy/ecodata_history.csv"
+        x1 = new Date("1991-01")
+        x_range=([x1,x2])
+
+
     }
 
     let choices = [];
@@ -505,6 +518,7 @@ function drawlinechart(){
 
     d3.select("#financial").select("#xaxis").remove()
     d3.select("#financial").selectAll("path").remove();
+    //d3.select("#financial").select("#ratiopath").remove()
 
     /*
     var svg = d3.select("#financial").append("svg")
@@ -538,6 +552,13 @@ function drawlinechart(){
     var stockscale_axis = d3.scaleLinear().range([height-20, 0]);
     var unemploymentscale_axis = d3.scaleLinear().range([height-20,0]);
     var mortgagescale_axis = d3.scaleLinear().range([height-20,0]);
+    /*
+    let x1 = new Date("2010-01");
+    let x2 = new Date("2017-09");
+    let x_range = [x1,x2]
+    x.domain(x_range)
+    */
+    x.domain(x_range)
 
     var StockFunction = d3.line()
         .x(function(d) { return x(d.date); })
@@ -574,6 +595,8 @@ function drawlinechart(){
                 ];
                 */
         x.domain(d3.extent(data, function(d) { return d.date; }));
+        //console.log(d3.extent(data, function(d) { return d.date; }))
+        //console.log(x)
         y.domain([0, d3.max(data, function(d) { return d.stock; })]);
         var stockmax = d3.max(data, function(d) { return d.stock; });
         //console.log(stockmax);
@@ -691,8 +714,185 @@ function drawlinechart(){
 
     });
 
+    if (document.getElementsByName("prratio")[0].checked){
+
+        //console.log("I am in")
+
+        var ratioscale = d3.scaleLinear().range([0, height-20]);
+
+        var ratioscale_axis = d3.scaleLinear().range([height-20, 0]);
+
+        ratioscale_axis.domain([0, 400]);
+        ratioscale.domain([0, 400]);
+
+        var RatioFunction = d3.line()
+            .x(function(d) { return x(d.date); })
+            .y(function(d) { return ratioscale(d.ratio); });
+
+        //let all_data = []
+        //let useful_data=[]
+        if(city.length>2){
+            alert("Please choose one or two cities")
+        }
+        else if(city.length<0){
+            alert("Please choose one or two cities")
+        }
+        else{
+            let citycolor=["purple","plum"]
+            for(let k = 0;k<city.length;k++){
+                let all_data=[]
+                let county_name = city[k][0];
+                let state_name = city[k][1];
+                let buy_length = odata["ListPrice_AllHomes"].length
+                //console.log(buy_length)
+                let rent_length = odata["RentPrice_AllHomes"].length
+                //console.log(rent_length)
+                let temp_check = 0
+                for (let i = 0;i<rent_length;i++){
+                    let rent_county = odata["RentPrice_AllHomes"][i]["CountyName"]
+                    let rent_state = odata["RentPrice_AllHomes"][i]["State"]
+                    let rent_metro = odata["RentPrice_AllHomes"][i]["Metro"]
+                    let rent_region = odata["RentPrice_AllHomes"][i]["RegionName"]
+
+                    if ((rent_county ==county_name)&&(state_name=rent_state)){
+                        temp_check = 1
+                        for(let j = 0;j<buy_length;j++){
+                            let buy_county = odata["ListPrice_AllHomes"][j]["CountyName"]
+                            let buy_state = odata["ListPrice_AllHomes"][j]["State"]
+                            let buy_metro = odata["ListPrice_AllHomes"][j]["Metro"]
+                            let buy_region = odata["ListPrice_AllHomes"][j]["RegionName"]
+                            if ((rent_county == buy_county)&&(rent_state == buy_state)&&(rent_metro == buy_metro)&&(rent_region == buy_region)){
+                                //
+                                temp_check = 2
+
+                                for (let key in odata["RentPrice_AllHomes"][i]){
+                                    if (!odata["RentPrice_AllHomes"][i].hasOwnProperty(key)) continue;
+                                    if ((key!="CountyName")&&(key!="Metro")&&(key!="RegionName")&&(key!="SizeRank")&&(key!="State")){
+
+                                        if (odata["ListPrice_AllHomes"][j].hasOwnProperty(key)){
+                                            let temp = {};
+                                            temp.date=new Date(key);
+                                            let rent_price = Number(odata["RentPrice_AllHomes"][i][key])
+                                            let list_price = Number(odata["ListPrice_AllHomes"][j][key])
+                                            temp.ratio=list_price/rent_price
+                                            if ((temp.ratio>0)&&(temp.ratio<100000)){
+                                                all_data.push(temp)
+
+                                            }
+
+                                        }
+                                        //console.log(odata["RentPrice_AllHomes"][i])
+
+
+                                    }
+
+                                }
+                                //console.log(odata["RentPrice_AllHomes"][i])
+                                //console.log(odata["ListPrice_AllHomes"][j])
+
+                            }
+
+                        }
+                        break
+
+                    }
+
+
+                }
+                if (temp_check!=2){
+                    //console.log(temp_check)
+                    alert("Data is missing for this city")
+                }
+                //if(odata[""][k].CountyName==county_name)&&(data[choices[i]][k].State==state_name)
+
+                //draw the line for ratio
+                all_data.sort(function(a, b){
+                    return a.date-b.date; //sort by date ascending
+                });
+                //console.log(all_data)
+                //console.log(d3.max(all_data, function(d) { return d.ratio; }))
+                //console.log(x)
+
+                //ratioscale_axis.domain([0, d3.max(all_data, function(d) { return d.ratio; })]);
+                //ratioscale.domain([0, d3.max(all_data, function(d) { return d.ratio; })]);
+
+
+                var ratioplot = svg.append("g")
+                //.attr("id","ratiopath")
+                    .append("path")
+                    .attr("transform", "translate(25," + height + ")"+" scale(1,-1)")
+                    .data([all_data])
+                    .attr("d", RatioFunction)
+                    .style("stroke",citycolor[k])
+                    .style("stroke-width",3)
+                    .style("fill","none");
+                ratioplot
+                    .on("mouseover", function(d){
+                        svg.append("g")
+                            .attr("id","ratio_yaxis")
+                            .attr("transform","translate(25,20)","scale(1,-1)")
+                            .call(d3.axisLeft(ratioscale_axis));
+                        svg.append("g")
+                            .attr("id","ratio_text")
+                            .append("text")
+                            //.attr("transform", "rotate(-90)")
+                            .attr("y", 25)
+                            .attr("x",200)
+                            .attr("dy", "0.71em")
+                            .attr("fill", citycolor[k])
+                            .text("List Price/Monthly Payment"+" in "+city[k][0]);
+                    })
+                    .on("mouseout", function(){svg.select("#ratio_yaxis").remove();
+                        svg.select("#ratio_text").remove();});
+            }
+
+
+
+        }
+
+
+
+
+    }
+
 }
-drawlinechart_houseprice({},[],[])
-drawlinechart()
+/*
+function drawratioline(data,city){
+
+    city = [["Salt Lake","UT"]]
+
+    if (document.getElementsByName("prratio")[0].checked){
+        if (city.length >1){
+            alert("Please only choose One city or uncheck List Price/Monthly Rent option")
+        }
+        else if (city.length == 1){
+
+            if (document.getElementsByName("history")){
+                alert("please uncheck the Longer history ")
+            }
+
+            d3.select("#financial").select("#raiopath").remove();
+            var svg = d3.select("#financial_chart")
+
+            let svgwidth = parseInt(svg.style('width'));
+            let svgheight = parseInt(svg.style('height'));
+
+            var margin = {top: 20, right: 20, bottom: 30, left: 50};
+            var width = svgwidth - margin.left - margin.right;
+            var height = svgheight - margin.top - margin.bottom;
+
+
+
+        }
+        else{
+            alert("Please choose One city")
+        }
+    }
+
+
+}
+*/
+//drawlinechart_houseprice({},[],[])
+//drawlinechart()
 
 
