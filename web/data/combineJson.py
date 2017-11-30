@@ -7,7 +7,7 @@
 # Python release: 3.6.0
 #
 # Date: 2017-11-25 21:43:04
-# Last modified: 2017-11-25 22:22:25
+# Last modified: 2017-11-29 20:54:04
 
 """
 Combine all the map data.
@@ -37,6 +37,9 @@ for name in names:
 
 path = 'map/us_states.json'
 read(path, 'usa')
+
+path = 'counties.json'
+read(path, 'key')
 
 with open('map.json', 'w', encoding='utf8') as f:
     json.dump(allMap, f)

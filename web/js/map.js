@@ -84,7 +84,6 @@ d3.json('../data/map.json', function(json){
     function  drawMap(state){
         d3.selectAll('#state_map path').remove();
         if (typeof(state) === 'string'){
-            console.log(json);
             d3.select('#whole_map').selectAll('path')
             .data(json[state].features)
             .enter()
@@ -122,7 +121,15 @@ d3.json('../data/map.json', function(json){
                     .data(json[state.properties.NAME].features);
             maps = maps.enter().append('path').merge(maps);
             maps.attr('d', path)
-                .style('fill', 'orange')
+                .style('fill', function(d){
+                    let key = d.properties.NAME10 + ',' + STATES_MAPPING[STATE];
+                    if (json.key.indexOf(key) > 0){
+                        return 'orange';
+                    }
+                    else{
+                        return '#848484';
+                    }
+                })
                 .attr('stroke', '#FFFFFF')
                 .attr('stroke-width', 0.05)
                 .on('mouseout', function(d){
