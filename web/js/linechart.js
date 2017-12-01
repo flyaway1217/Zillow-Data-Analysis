@@ -286,7 +286,7 @@ function drawlinechart_houseprice(data,choices,cities){
             "ListPrice_AllHomes":"gray"
 
         };
-        let linetype = ["5,5","10,10","20,10,5,5,5,10","5,0"];
+        let linetype = ["2,2","4,4","8,8","5,0"];
         let max_price = 0;
         let all_data = [];
         let date_extent = [];
@@ -516,8 +516,14 @@ function drawlinechart(odata,city){
     }
     //choices = selected
 
-    d3.select("#financial").select("#xaxis").remove()
+    d3.select("#financial").select("#xaxis").remove();
     d3.select("#financial").selectAll("path").remove();
+    d3.select("#financial").select("#stock").remove();
+    d3.select("#financial").select("#mortgage").remove();
+    d3.select("#financial").select("#unemployment").remove();
+    d3.select("#financial").select("#city0").remove();
+    d3.select("#financial").select("#city1").remove();
+    d3.select("#financial").selectAll("line").remove()
     //d3.select("#financial").select("#ratiopath").remove()
 
     /*
@@ -531,7 +537,7 @@ function drawlinechart(odata,city){
     let svgwidth = parseInt(svg.style('width'));
     let svgheight = parseInt(svg.style('height'));
 
-    var margin = {top: 20, right: 20, bottom: 30, left: 50};
+    var margin = {top: 20, right: 170, bottom: 30, left: 50};
     var width = svgwidth - margin.left - margin.right;
     var height = svgheight - margin.top - margin.bottom;
 
@@ -622,6 +628,22 @@ function drawlinechart(odata,city){
                     .style("stroke-width",2)
                     .style("fill","none");
 
+                svg.append("g").append("line")
+                    .attr("x1",svgwidth-180)
+                    .attr("y1",25)
+                    .attr("x2",svgwidth-160)
+                    .attr("y2",25)
+                    .style("stroke","red")
+                    .style("stroke-width",3)
+
+                svg.append("g").append("text")
+                    .attr("id",choices[i])
+                    .attr("x",svgwidth-150)
+                    .attr("y",30)
+                    .attr("fill", "red")
+                    .style("font-weight","normal")
+                    .text(choices[i])
+
                 stockplot
                     .on("mouseover", function(d){
                         svg.append("g")
@@ -632,8 +654,8 @@ function drawlinechart(odata,city){
                             .attr("id","stock_text")
                             .append("text")
                             //.attr("transform", "rotate(-90)")
-                            .attr("y", 35)
-                            .attr("x",200)
+                            .attr("y", 18)
+                            .attr("x",28)
                             .attr("dy", "0.71em")
                             .attr("fill", "red")
                             .text("Stock Index");
@@ -650,6 +672,22 @@ function drawlinechart(odata,city){
                     .style("stroke","green")
                     .style("stroke-width",3)
                     .style("fill","none");
+
+                svg.append("g").append("line")
+                    .attr("x1",svgwidth-180)
+                    .attr("y1",20+25)
+                    .attr("x2",svgwidth-160)
+                    .attr("y2",20+25)
+                    .style("stroke","green")
+                    .style("stroke-width",3)
+
+                svg.append("g").append("text")
+                    .attr("id",choices[i])
+                    .attr("x",svgwidth-150)
+                    .attr("y",20+30)
+                    .attr("fill", "green")
+                    .style("font-weight","normal")
+                    .text(choices[i])
                 mortgageplot
                     .on("mouseover", function(d){
                         svg.append("g")
@@ -660,11 +698,11 @@ function drawlinechart(odata,city){
                             .attr("id","mortgage_text")
                             .append("text")
                             //.attr("transform", "rotate(-90)")
-                            .attr("y", 35)
-                            .attr("x",200)
+                            .attr("y", 5)
+                            .attr("x",28)
                             .attr("dy", "0.71em")
                             .attr("fill", "green")
-                            .text("Mortgage Interest Rate");
+                            .text("Mortgage Interest Rate (%)");
                     })
                     .on("mouseout", function(){svg.select("#mortgage_yaxis").remove();
                         svg.select("#mortgage_text").remove();});
@@ -679,6 +717,22 @@ function drawlinechart(odata,city){
                     .style("stroke-width",3)
                     .style("fill","none");
 
+                svg.append("g").append("line")
+                    .attr("x1",svgwidth-180)
+                    .attr("y1",40+25)
+                    .attr("x2",svgwidth-160)
+                    .attr("y2",40+25)
+                    .style("stroke","blue")
+                    .style("stroke-width",3)
+
+                svg.append("g").append("text")
+                    .attr("id",choices[i])
+                    .attr("x",svgwidth-150)
+                    .attr("y",40+30)
+                    .attr("fill", "blue")
+                    .style("font-weight","normal")
+                    .text(choices[i])
+
                 unemploymentplot
                     .on("mouseover", function(d){
                         svg.append("g")
@@ -689,11 +743,11 @@ function drawlinechart(odata,city){
                             .attr("id","unemployment_text")
                             .append("text")
                             //.attr("transform", "rotate(-90)")
-                            .attr("y", 35)
-                            .attr("x",200)
+                            .attr("y", 5)
+                            .attr("x",28)
                             .attr("dy", "0.71em")
                             .attr("fill", "blue")
-                            .text("Unemployment Rate");
+                            .text("Unemployment Rate (%)");
                     })
                     .on("mouseout", function(){svg.select("#unemployment_yaxis").remove();
                         svg.select("#unemployment_text").remove();});
@@ -826,6 +880,24 @@ function drawlinechart(odata,city){
                     .style("stroke",citycolor[k])
                     .style("stroke-width",3)
                     .style("fill","none");
+
+                svg.append("g").append("line")
+                    .attr("x1",svgwidth-180)
+                    .attr("y1",60+25+20*k)
+                    .attr("x2",svgwidth-160)
+                    .attr("y2",60+25+20*k)
+                    .style("stroke",citycolor[k])
+                    .style("stroke-width",3)
+
+                svg.append("g").append("text")
+                    .attr("id","city"+k)
+                    .attr("x",svgwidth-150)
+                    .attr("y",60+30+20*k)
+                    .attr("fill", citycolor[k])
+                    .style("font-weight","normal")
+                    .text(city[k][0])
+
+
                 ratioplot
                     .on("mouseover", function(d){
                         svg.append("g")
@@ -836,11 +908,12 @@ function drawlinechart(odata,city){
                             .attr("id","ratio_text")
                             .append("text")
                             //.attr("transform", "rotate(-90)")
-                            .attr("y", 25)
-                            .attr("x",200)
+                            .attr("y", 8)
+                            .attr("x",28)
                             .attr("dy", "0.71em")
-                            .attr("fill", citycolor[k])
-                            .text("List Price/Monthly Payment"+" in "+city[k][0]);
+                            .attr("fill", "black")
+                            .text("List Price/Monthly Payment (months)")
+                            //.text("List Price/Monthly Payment"+" in "+city[k][0]);
                     })
                     .on("mouseout", function(){svg.select("#ratio_yaxis").remove();
                         svg.select("#ratio_text").remove();});
