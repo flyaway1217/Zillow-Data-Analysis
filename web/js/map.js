@@ -75,7 +75,8 @@ let STATES_MAPPING={
     "Wyoming":"WY",
 };
 
-d3.json('data/map.json', function(json){
+d3.json('data/newmap.json', function(json){
+    console.log(json);
     color.domain([
         d3.min(json.usa.features, function(d){return d.properties.CENSUSAREA;}),
         d3.max(json.usa.features, function(d){return d.properties.CENSUSAREA;})
