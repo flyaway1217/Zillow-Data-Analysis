@@ -26,6 +26,12 @@ In this project, we used following libraries:
 **Website**: http://zillow.zhouyichu.com/
 **screencast videos**: 
 
+# Shortcoming
+Because our server is very old and slow and our map data is very large, the loading process maybe very slow.
+Until now, we still have no idea how to deal with this problem.
+When we test it on our local laptop, it loads quick enough.
+But, in the old server, it seems to be slow.
+
 
 
 
