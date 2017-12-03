@@ -24,14 +24,11 @@ In this project, we used following libraries:
 #  Urls
 
 **Website**: http://zillow.zhouyichu.com/
-**screencast videos**: 
+**screencast videos**:  https://youtu.be/DuRreAaSPb4
 
 # Shortcoming
+
 Because our server is very old and slow and our map data is very large, the loading process maybe very slow.
 Until now, we still have no idea how to deal with this problem.
 When we test it on our local laptop, it loads quick enough.
-But, in the old server, it seems to be slow.
-
-
-
-
+But, in the old web server, it seems to be slow.
